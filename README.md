@@ -32,7 +32,7 @@ I hope it helps you as much as it's helped me.
 1. Open HACS in your Home Assistant sidebar
 2. Click the three-dot menu → **Custom repositories**
 3. Paste: `https://github.com/GreenNovaEmma/migraine-risk-card`
-4. Set category to **Plugin**
+4. Set category to **Dashboard**
 5. Click **Add**, then find "Migraine Risk Card" in the Frontend list and install it
 6. Add the resource in **Settings → Dashboards → Resources**:
    - URL: `/hacsfiles/migraine-risk-card/migraine-risk-card.js`

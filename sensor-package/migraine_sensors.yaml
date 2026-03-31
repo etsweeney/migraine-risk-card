@@ -791,8 +791,6 @@ automation:
     alias: "Migraine: Track Pressure Peaks"
     description: "Tracks pressure peaks over 6h and 24h rolling windows for migraine drop detection"
     trigger:
-      - platform: state
-        entity_id: sensor.migraine_pressure_hpa
       - platform: time_pattern
         minutes: "/10"
     condition:
