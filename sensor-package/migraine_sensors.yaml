@@ -303,15 +303,20 @@ template:
         state: >
           {% set weather_entity = states('input_text.migraine_source_weather') %}
           {% set wind_entity = states('input_text.migraine_source_wind_speed') %}
+          {% macro to_kmh(v) %}
+            {{ (v | float(0) * 1.60934) | round(1) }}
+          {% endmacro %}
           {% if wind_entity not in ['not_configured','unknown','unavailable','',none] %}
             {% set v = states(wind_entity) %}
             {% if v not in ['unknown','unavailable','',none] %}
-              {{ v | float(0) }}
+              {{ to_kmh(v) | trim }}
             {% else %}
-              {{ state_attr(weather_entity, 'wind_speed') | float(0) }}
+              {% set wa = state_attr(weather_entity, 'wind_speed') %}
+              {{ to_kmh(wa) | trim if wa is number else 0 }}
             {% endif %}
           {% elif weather_entity not in ['not_configured','unknown','unavailable','',none] %}
-            {{ state_attr(weather_entity, 'wind_speed') | float(0) }}
+            {% set wa = state_attr(weather_entity, 'wind_speed') %}
+            {{ to_kmh(wa) | trim if wa is number else 0 }}
           {% else %}
             {{ 0 }}
           {% endif %}
