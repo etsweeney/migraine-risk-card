@@ -221,15 +221,25 @@ template:
         state: >
           {% set weather_entity = states('input_text.migraine_source_weather') %}
           {% set temp_entity = states('input_text.migraine_source_temperature') %}
+          {% macro to_celsius(v) %}
+            {% set f = v | float(none) %}
+            {% if f is not none and f > 50 %}
+              {{ ((f - 32) * 5/9) | round(1) }}
+            {% else %}
+              {{ f | round(1) }}
+            {% endif %}
+          {% endmacro %}
           {% if temp_entity not in ['not_configured','unknown','unavailable','',none] %}
             {% set v = states(temp_entity) %}
             {% if v not in ['unknown','unavailable','',none] %}
-              {{ v | float(0) }}
+              {{ to_celsius(v) | trim }}
             {% else %}
-              {{ state_attr(weather_entity, 'temperature') | float(0) }}
+              {% set wa = state_attr(weather_entity, 'temperature') %}
+              {{ to_celsius(wa) | trim if wa is number else 0 }}
             {% endif %}
           {% elif weather_entity not in ['not_configured','unknown','unavailable','',none] %}
-            {{ state_attr(weather_entity, 'temperature') | float(0) }}
+            {% set wa = state_attr(weather_entity, 'temperature') %}
+            {{ to_celsius(wa) | trim if wa is number else 0 }}
           {% else %}
             {{ 0 }}
           {% endif %}
