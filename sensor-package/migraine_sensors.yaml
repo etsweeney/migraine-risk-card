@@ -223,7 +223,7 @@ template:
           {% set temp_entity = states('input_text.migraine_source_temperature') %}
           {% macro to_celsius(v) %}
             {% set f = v | float(none) %}
-            {% if f is not none and f > 50 %}
+            {% if f is not none and f > 25 %}
               {{ ((f - 32) * 5/9) | round(1) }}
             {% else %}
               {{ f | round(1) }}
